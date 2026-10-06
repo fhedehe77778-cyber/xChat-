@@ -1,0 +1,126 @@
+local HttpService = game:GetService("HttpService")
+
+local Moderation = {}
+
+local API_URL = "https://x1rm.onrender.com/badwords"
+
+local START_DELAY = 180
+
+local BadWords = {}
+local Loaded = false
+
+local function NormalizeText(text)
+    text = tostring(text):lower()
+
+    text = text:gsub("[ًٌٍَُِّْـ]", "")
+
+    text = text:gsub("أ", "ا")
+    text = text:gsub("إ", "ا")
+    text = text:gsub("آ", "ا")
+    text = text:gsub("ٱ", "ا")
+    text = text:gsub("ى", "ي")
+    text = text:gsub("ة", "ه")
+
+    text = text:gsub("%s+", " ")
+
+    return text
+end
+
+local function LoadBadWords()
+    local success, result = pcall(function()
+        return game:HttpGet(API_URL)
+    end)
+
+    if not success then
+        warn("[X CHAT] Failed to load moderation list")
+        return false
+    end
+
+    local decodeSuccess, data = pcall(function()
+        return HttpService:JSONDecode(result)
+    end)
+
+    if not decodeSuccess then
+        warn("[X CHAT] Invalid moderation response")
+        return false
+    end
+
+    if not data.success or type(data.words) ~= "table" then
+        warn("[X CHAT] Moderation list unavailable")
+        return false
+    end
+
+    table.clear(BadWords)
+
+    for _, word in ipairs(data.words) do
+        if type(word) == "string" and #word >= 2 then
+            table.insert(
+                BadWords,
+                NormalizeText(word)
+            )
+        end
+    end
+
+    Loaded = true
+
+    print(
+        "[X CHAT] Loaded "
+        .. tostring(#BadWords)
+        .. " moderation entries"
+    )
+
+    return true
+end
+
+function Moderation.Start()
+    task.spawn(function()
+
+        print(
+            "[X CHAT] Moderation starts in "
+            .. tostring(START_DELAY)
+            .. " seconds"
+        )
+
+        task.wait(START_DELAY)
+
+        LoadBadWords()
+
+    end)
+end
+
+function Moderation.IsBad(text)
+
+    if not Loaded then
+        return false
+    end
+
+    if type(text) ~= "string" or text == "" then
+        return false
+    end
+
+    local normalized = NormalizeText(text)
+
+    for _, badWord in ipairs(BadWords) do
+
+        if normalized:find(
+            badWord,
+            1,
+            true
+        ) then
+            return true
+        end
+
+    end
+
+    return false
+end
+
+function Moderation.GetCount()
+    return #BadWords
+end
+
+function Moderation.IsLoaded()
+    return Loaded
+end
+
+return Moderation
