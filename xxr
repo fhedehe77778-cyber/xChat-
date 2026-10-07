@@ -1,0 +1,61 @@
+local Ids = {
+    ["ID_1"] = {
+        Date = "2026/10/08 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = true,
+        Premium = true
+    },
+
+    ["ID_2"] = {
+        Date = "2026/10/09 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = true,
+        Premium = true
+    }
+}
+
+local function GetTime(Date)
+    local Y, M, D, H, Min, S = Date:match(
+        "^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$"
+    )
+
+    if not Y then
+        return 0
+    end
+
+    return os.time({
+        year = tonumber(Y),
+        month = tonumber(M),
+        day = tonumber(D),
+        hour = tonumber(H),
+        min = tonumber(Min),
+        sec = tonumber(S)
+    })
+end
+
+local CurrentTime = os.time()
+local Users = {}
+
+for ID, Data in pairs(Ids) do
+    local ExpiryTime = GetTime(Data.Date)
+
+    if CurrentTime < ExpiryTime then
+        Users[ID] = {
+            Protected = Data.Protected,
+            Cmds = Data.Cmds,
+            Op = Data.Op,
+            Premium = Data.Premium
+        }
+    else
+        Users[ID] = {
+            Protected = false,
+            Cmds = false,
+            Op = false,
+            Premium = false
+        }
+    end
+end
+
+return Users
