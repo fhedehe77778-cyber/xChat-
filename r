@@ -1,16 +1,16 @@
 local Players = game:GetService("Players")
 
 local PermanentBans = {
-    [111111111] = true,
-    [222222222] = true,
-    [333333333] = true,
-    [444444444] = true,
-    [555555555] = true,
-    [666666666] = true,
-    [777777777] = true,
-    [888888888] = true,
-    [999999999] = true,
-    [123456789] = true
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true,
+    [] = true
 }
 
 local TemporaryBans = {
@@ -34,7 +34,7 @@ local TemporaryBans = {
     [] = "2027-01-15",
     [] = "2027-01-20",
     [] = "2027-01-25",
-    [776600554] = "2027-02-01",
+    [] = "2027-02-01",
     [] = "2027-02-10",
     [] = "2027-02-20"
 }
