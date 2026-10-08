@@ -1,7 +1,6 @@
 local Players = game:GetService("Players")
 
 local PermanentBans = {
-    [11549422626] = true,
     [] = true,
     [] = true,
     [] = true,
@@ -10,7 +9,8 @@ local PermanentBans = {
     [] = true,
     [] = true,
     [] = true,
-    [] = true
+    [] = true,
+    [] = true,
 }
 
 local TemporaryBans = {
@@ -23,24 +23,12 @@ local TemporaryBans = {
     [] = "2026-11-15",
     [] = "2026-11-20",
     [] = "2026-11-25",
-    [] = "2026-12-01",
-    [] = "2026-12-05",
-    [] = "2026-12-10",
-    [] = "2026-12-15",
-    [] = "2026-12-20",
-    [] = "2026-12-25",
-    [] = "2027-01-01",
-    [] = "2027-01-10",
-    [] = "2027-01-15",
-    [] = "2027-01-20",
-    [] = "2027-01-25",
-    [] = "2027-02-01",
-    [] = "2027-02-10",
-    [] = "2027-02-20"
+    [] = "2026-11-30",
 }
 
 local function GetDateTimestamp(date)
-    local year, month, day = date:match("^(%d+)%-(%d+)%-(%d+)$")
+    local year, month, day =
+        date:match("^(%d+)%-(%d+)%-(%d+)$")
 
     if not year then
         return nil
@@ -59,7 +47,7 @@ end
 local function CheckBan(player)
     local userId = player.UserId
 
-    if PermanentBans[userId] then
+    if PermanentBans[userId] == true then
         player:Kick("تم حظرك نهائياً.")
         return
     end
@@ -76,22 +64,25 @@ local function CheckBan(player)
         return
     end
 
-    local now = os.time()
+    local currentTime = os.time()
 
-    if now >= expiryTimestamp then
+    if currentTime >= expiryTimestamp then
         return
     end
 
-    local remainingSeconds = expiryTimestamp - now
+    local remainingSeconds = expiryTimestamp - currentTime
     local remainingDays = math.ceil(remainingSeconds / 86400)
 
     player:Kick(
-        "تم حظرك مؤقتاً.\nالأيام المتبقية: " .. tostring(remainingDays)
+        "تم حظرك مؤقتاً.\nالأيام المتبقية: "
+        .. tostring(remainingDays)
     )
 end
 
 Players.PlayerAdded:Connect(function(player)
-    CheckBan(player)
+    task.spawn(function()
+        CheckBan(player)
+    end)
 end)
 
 for _, player in ipairs(Players:GetPlayers()) do
