@@ -1,25 +1,90 @@
 local Ids = {
-    ["ID_1"] = {
-        Date = "2026/10/08 23:59:59",
+    [111111111] = {
+        Date = "",
+        Protected = true,
+        Cmds = true,
+        Op = true,
+        Premium = true
+    },
+
+    [] = {
+        Date = "2026/12/31 23:59:59",
         Protected = false,
         Cmds = true,
         Op = true,
         Premium = true
     },
 
-    ["ID_2"] = {
-        Date = "2026/10/09 23:59:59",
+    [] = {
+        Date = "2026/11/30 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = true
+    },
+
+    [] = {
+        Date = "2026/11/30 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = true
+    },
+
+    [] = {
+        Date = "2026/10/31 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = false
+    },
+
+    [] = {
+        Date = "2026/10/31 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = false
+    },
+
+    [] = {
+        Date = "2026/12/15 23:59:59",
         Protected = false,
         Cmds = true,
         Op = true,
         Premium = true
+    },
+
+    [] = {
+        Date = "2027/01/01 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = true,
+        Premium = true
+    },
+
+    [] = {
+        Date = "2027/01/15 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = true
+    },
+
+    [] = {
+        Date = "2027/02/01 23:59:59",
+        Protected = false,
+        Cmds = true,
+        Op = false,
+        Premium = false
     }
 }
 
 local function GetTime(Date)
-    local Y, M, D, H, Min, S = Date:match(
-        "^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$"
-    )
+    local Y, M, D, H, Min, S =
+        Date:match(
+            "^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$"
+        )
 
     if not Y then
         return 0
@@ -43,17 +108,10 @@ for ID, Data in pairs(Ids) do
 
     if CurrentTime < ExpiryTime then
         Users[ID] = {
-            Protected = Data.Protected,
-            Cmds = Data.Cmds,
-            Op = Data.Op,
-            Premium = Data.Premium
-        }
-    else
-        Users[ID] = {
-            Protected = false,
-            Cmds = false,
-            Op = false,
-            Premium = false
+            Protected = Data.Protected == true,
+            Cmds = Data.Cmds == true,
+            Op = Data.Op == true,
+            Premium = Data.Premium == true
         }
     end
 end
