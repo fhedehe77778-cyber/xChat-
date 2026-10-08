@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 
 local PermanentBans = {
-    [] = true,
+    [11549422626] = true,
     [] = true,
     [] = true,
     [] = true,
