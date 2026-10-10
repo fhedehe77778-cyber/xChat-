@@ -1,91 +1,32 @@
 local Ids = {
-    [11549422626] = {
-        Date = "",
-        Protected = true,
-        Cmds = true,
-        Op = true,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2026/12/31 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = true,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2026/11/30 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2026/11/30 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2026/10/31 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = false
-    },
-
-    [] = {
-        Date = "2026/10/31 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = false
-    },
-
-    [] = {
-        Date = "2026/12/15 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = true,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2027/01/01 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = true,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2027/01/15 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = true
-    },
-
-    [] = {
-        Date = "2027/02/01 23:59:59",
-        Protected = false,
-        Cmds = true,
-        Op = false,
-        Premium = false
-    }
+    [11549422626] = {Date = "", Protected = true, Cmds = true, Op = true, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
 }
 
 local function GetTime(Date)
-    local Y, M, D, H, Min, S =
-        Date:match(
-            "^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$"
-        )
+    if not Date or Date == "" or Date == '""' or Date == "''" then
+        return -1 -- قيمة -1 تعني صلاحية غير منتهية
+    end
 
+    local Y, M, D, H, Min, S = Date:match("^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$")
     if not Y then
         return 0
     end
@@ -106,7 +47,7 @@ local Users = {}
 for ID, Data in pairs(Ids) do
     local ExpiryTime = GetTime(Data.Date)
 
-    if CurrentTime < ExpiryTime then
+    if ExpiryTime == -1 or (ExpiryTime > 0 and CurrentTime < ExpiryTime) then
         Users[ID] = {
             Protected = Data.Protected == true,
             Cmds = Data.Cmds == true,
