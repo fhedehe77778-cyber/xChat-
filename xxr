@@ -1,9 +1,8 @@
 -- ASTA | Permissions Database
 
 return {
-    -- استبدل ID برقم حساب Roblox
     ["11549422626"] = {
-        name = "",
+        name = "ioohshwhwhw8",
         expires = "2026-12-31"
     },
 
