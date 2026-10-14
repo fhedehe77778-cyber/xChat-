@@ -1,60 +1,14 @@
-local Ids = {
-    [11549422626] = {Date = "", Protected = true, Cmds = true, Op = true, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
-    [0] = {Date = "", Protected = false, Cmds = true, Op = false, Premium = true},
+-- ASTA | Permissions Database
+
+return {
+    -- استبدل ID برقم حساب Roblox
+    ["11549422626"] = {
+        name = "YourUsername",
+        expires = "2026-12-31"
+    },
+
+    ["987654321"] = {
+        name = "AnotherUsername",
+        expires = "2026-11-30"
+    }
 }
-
-local function GetTime(Date)
-    if not Date or Date == "" or Date == '""' or Date == "''" then
-        return -1 -- قيمة -1 تعني صلاحية غير منتهية
-    end
-
-    local Y, M, D, H, Min, S = Date:match("^(%d+)/(%d+)/(%d+)%s+(%d+):(%d+):(%d+)$")
-    if not Y then
-        return 0
-    end
-
-    return os.time({
-        year = tonumber(Y),
-        month = tonumber(M),
-        day = tonumber(D),
-        hour = tonumber(H),
-        min = tonumber(Min),
-        sec = tonumber(S)
-    })
-end
-
-local CurrentTime = os.time()
-local Users = {}
-
-for ID, Data in pairs(Ids) do
-    local ExpiryTime = GetTime(Data.Date)
-
-    if ExpiryTime == -1 or (ExpiryTime > 0 and CurrentTime < ExpiryTime) then
-        Users[ID] = {
-            Protected = Data.Protected == true,
-            Cmds = Data.Cmds == true,
-            Op = Data.Op == true,
-            Premium = Data.Premium == true
-        }
-    end
-end
-
-return Users
