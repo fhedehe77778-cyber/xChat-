@@ -3,7 +3,7 @@
 return {
     -- استبدل ID برقم حساب Roblox
     ["11549422626"] = {
-        name = "YourUsername",
+        name = "",
         expires = "2026-12-31"
     },
 
